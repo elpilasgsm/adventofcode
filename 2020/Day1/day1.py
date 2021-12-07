@@ -7,7 +7,7 @@ resp = open("input.txt").readlines()
 nums = numpy.unique(numpy.sort(numpy.array([int(i) for i in resp])))
 
 for i in range(len(nums)):
-    curNum = 2020 - nums[i] #2004
+    curNum = TARGET - nums[i] #2004
     for j in range(i + 1, len(nums)):
         result = numpy.where(nums == curNum - nums[j])
         if len(result[0]) > 0:
