@@ -1,26 +1,43 @@
+#
+from collections import Counter
+
+#data = open("example.txt").read()
 data = open("input.txt").read()
 PERIOD = 7
 
+cache = {}
 
+def buildKey(init,days):
+    return str(init) + "X" + str(days)
 # data = open("example.txt").read()
 def oneFishProducing(init, daysLeft):
-    return ((daysLeft - init) - (daysLeft - init) % PERIOD) / PERIOD
+    key = buildKey(init,daysLeft)
+    if init > daysLeft:
+        cache[key] = 0
+        return 0
+    dif = daysLeft - init
+    newFishes = 0
+    while newFishes * PERIOD < dif:
+        newFishes = newFishes + 1
 
-
-initData = [int(i) for i in data.split(",")]
-print("initData=" + str(initData))
-toBeAdded = 0
-for day in range(0, 256):
-    for fishNum in range(len(initData)):
-        if initData[fishNum] == 0:
-            toBeAdded = toBeAdded + 1
-            initData[fishNum] = 6
+    sum = 0
+    for i in range(newFishes):
+        localKey = buildKey(9 + (init + (PERIOD * i)), daysLeft)
+        if localKey in cache:
+            sum = sum + cache[localKey]
         else:
-            initData[fishNum] = initData[fishNum] - 1
-    if toBeAdded > 0:
-        for i in range(toBeAdded):
-            initData.append(8)
-        toBeAdded = 0
-    if day % 20 == 0:
-        print("At day: " + str(day) + " len: " + str(len(initData)))
-print(len(initData))
+            sum = sum + oneFishProducing(9 + (init + (PERIOD * i)), daysLeft)
+    cache[key] = newFishes + sum
+    return newFishes + sum
+
+#1710623015163
+initData = [int(i) for i in data.split(",")]
+toBeAdded = 0
+days = 256
+val = len(initData)
+counter = Counter(initData)
+#
+for fish in counter:
+    val = val + oneFishProducing(fish, days) * counter[fish]
+
+print(val)
