@@ -1,4 +1,6 @@
 # data = open("input.txt").readlines()
+import time
+
 import numpy
 
 
@@ -46,6 +48,7 @@ def calcFuel(lengths):
     return numpy.array(retVal)
 
 
+t0 = time.time()
 fuel = 10000000000
 index = 0
 for pos in range(max(positions)):
@@ -53,5 +56,6 @@ for pos in range(max(positions)):
     if curFuel < fuel:
         fuel = curFuel
         index = pos
+t1 = time.time()
 
-print("Part2: Fuel=" + str(fuel) + " at pos: " + str(index))
+print("Part2: Fuel=" + str(fuel) + " at pos: " + str(index) + ". Time: "+str(t1-t0)+"sec.")
